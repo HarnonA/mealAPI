@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+ 
+  app:
+    container_name: REACT
+    build: ./front
+    command: npm start
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front:/usr/app
+    depends_on:
+    - server
+
+
+  server:
+    container_name: NODEJS
+    build: ./back
+    volumes:
+      - ./back:/node-app
+      - ./back/node_modules:/node-app/node_modules
+    depends_on:
+      - db
+    links:
+      - db
+    ports:
+      - '3002:3002'
+
+  db:
+    image: 'mongo'
+    container_name: MONGODB
+    ports:
+      - '27020:27017'
+    volumes:
+      - .back/data/db:/data/db
+
+
+
+
+
