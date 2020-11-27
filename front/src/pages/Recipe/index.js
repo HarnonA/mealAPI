@@ -6,7 +6,7 @@ import NotAuth from '../NotAuth/index';
 
 
 function Recipe(props ) {
-    if(!props.location.params)
+    if(props.location.params === undefined)
         props.location.params = {data:null}
     
     var data = props.location.params.data;
@@ -51,10 +51,9 @@ function Recipe(props ) {
 
     return (
         <>
-            {props.name ? <>
+            {props.location.params.data ? <>
                 <Header />
                 <div className="Recipe">
-                    {console.log(props)}
 
                     <h1>{data.strMeal}</h1>
                     {/* <img src={props.location.params.data.strMealThumb} /> */}
