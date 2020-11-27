@@ -1,0 +1,89 @@
+.Table {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* flex: 1; */
+}
+
+.tablePage{
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tablePage .search {
+    padding-top: 2rem;
+    width: 40%;
+}
+
+.tablePage table {
+    width: 80%;
+    background-color: white;
+    margin-top: 1rem;
+    
+}
+
+.tablePage th {
+    
+    border-bottom: solid 2px red;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    min-width: 20%;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    
+      
+}
+
+.tablePage tbody td { 
+    text-align: center;
+    flex-wrap: wrap;
+    
+}
+.tablePage tbody td  {
+    /* border: solid 3px black ; */
+    padding: 8px 0;
+}
+
+.tablePage tbody img { 
+    width: 4rem;
+}
+
+.tablePage tbody a .youtubeBtn{ 
+    color: red;
+    
+}
+
+.tablePage tbody a .plusBtn {
+    color: green;
+
+}
+.tablePage .pagination {
+    
+    margin: 1rem 0 3rem;
+}
+
+.tablePage .pagination button {
+    border-radius: 50%;
+    border: 0;
+    width: 2rem;
+    height: 2rem;
+    
+}
+
+@media (max-width: 520px) {
+    .tablePage .search {
+        width: 80%;
+    }
+    .tablePage table {
+        margin: 1rem;
+        justify-content: flex-start;
+        align-items: flex-start;
+        width: 60%;
+        flex-wrap: wrap;
+    }
+}

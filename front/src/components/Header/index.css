@@ -1,0 +1,29 @@
+.Header {
+    background-color: #ff1b1b;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.Header p {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    font-size: 1.6rem;
+    padding: 1rem;
+
+}
+
+.Header title {
+    flex: 1;
+}
+
+.Header .headerSide {
+    width: 5rem;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
