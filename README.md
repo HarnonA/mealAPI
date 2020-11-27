@@ -3,7 +3,7 @@
 
 <h1>Getting started</h1>
 
-<img src="gs://image-983ee.appspot.com/preview.png" alt="preview">
+<img src="https://firebasestorage.googleapis.com/v0/b/image-983ee.appspot.com/o/preview.png?alt=media" alt="preview">
 
 
 <h4>Download this repo</h4>
