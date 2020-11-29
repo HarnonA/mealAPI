@@ -11,6 +11,29 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-top: 2rem;
+}
+
+.tablePage .filterMeal {
+    width: 30%;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.tablePage .filterMeal input {
+    width: 100%;
+    height: 2.2rem;
+}
+
+.tablePage .filterBtn{
+    flex-direction: row;
+    width: 100%;
+    margin-top: 8px;
+}
+
+.tablePage .filterBtn button {
+    width: 50%;
 }
 
 .tablePage .search {
@@ -75,10 +98,16 @@
     
 }
 
+
+
 @media (max-width: 520px) {
     .tablePage .search {
         width: 80%;
     }
+    .tablePage .filterMeal {
+        width: 80%;
+    }
+
     .tablePage table {
         margin: 1rem;
         justify-content: flex-start;
