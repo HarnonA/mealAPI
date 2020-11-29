@@ -22,7 +22,8 @@
 <p>123456<p>
 
 <h1>TODO</h1>
-<p>Bug fixes with list hook<p>
+<p>Filter without buttons</p>
+<p>Responsive table</p>
 <p>back-end<p>
 
 
