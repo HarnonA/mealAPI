@@ -4,11 +4,12 @@ import {
   usePagination,
 } from 'react-table'
 import React, { useEffect, useState } from 'react'
+import { connect } from 'react-redux';
+import { mealAdd } from '../../store/actions/meal'
 import { FaYoutube, FaPlusCircle } from 'react-icons/fa';
-import Select from 'react-select'
+
 import { Link } from 'react-router-dom'
 
-import { mealAdd } from '../../store/actions/meal'
 
 import Header from '../../components/Header/index'
 import Footer from '../../components/Footer/index'
@@ -18,49 +19,46 @@ import './index.css'
 
 
 
-import axios from 'axios'
-import { connect } from 'react-redux';
-
 function Table(props) {
 
+  const [inputFilter, setInputFilter] = useState("")
   const [data, setData] = useState([])
 
 
-
   useEffect(() => {
-    if (data.length === 0) getData()
-
-  }, [data])
-
-  const call = () => {
-    if (data.length === 0) getData()
-  }
+    getData()
+    console.log("useEfffect")
+  }, [])
 
 
 
-  const getData = () => {
+  const getData = async () => {
     let letter = ["a", "b",
-      "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-      "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+      // "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
+      // "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
     ]
-    letter.map(e => getDataFromAPI(e))
-  }
 
-  const getDataFromAPI = (l) => {
-    axios.get(`https://www.themealdb.com/api/json/v1/1/search.php?f=${l}`)
-      // axios.get()
-      .then( res => {
-        res.data.meals.map( async (e) => {
-          let newArr = data
-          newArr.push(await e)
-          setData(newArr)
-          console.log(newArr)
-        })
-        props.onAddMeal(data);
-        console.log(data)
-      }).catch(err => console.log(err))
-  }
+    try {
+      let allMeal = await Promise.all(letter.map(async e => await getDataFromAPI(e)))
+      let allMealVisible = allMeal.flat().map(e => {
+        return { "visible": true, ...e }
+      })
+      setData(allMealVisible)
+    } catch (err) {
+      console.log("Something went wrong.")
+    }
 
+  }
+  const getDataFromAPI = async (l) => {
+    console.log("Get from API")
+    try {
+      const res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${l}`)
+      const res1 = await res.json()
+      return [...data, ...res1.meals]
+    } catch (err) {
+      console.log("Something went wrong.")
+    }
+  }
 
   const columns = React.useMemo(() => [
     {
@@ -89,71 +87,75 @@ function Table(props) {
 
 
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    // rows,
-    page,
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    state: { pageIndex },
-    prepareRow,
-  } = useTable(
-    {
-      columns,
-      data: props.meal.meal,
-      initialState: { pageIndex: 0 },
-    },
-    useSortBy,
-    usePagination,
-  )
 
 
-  const options = data.map(e => {
-    return { value: e.strMeal, label: e.strMeal }
-  })
+  function TableS({ columns, data }) {
+    // Use the state and functions returned from useTable to build your UI
+    const {
+      getTableProps,
+      getTableBodyProps,
+      headerGroups,
+      prepareRow,
+      page, // Instead of using 'rows', we'll use page,
+      // which has only the rows for the active page
 
+      // The rest of these things are super handy, too ;)
+      canPreviousPage,
+      canNextPage,
+      pageOptions,
+      pageCount,
+      gotoPage,
+      nextPage,
+      previousPage,
+      state: { pageIndex },
+    } = useTable(
+      {
+        columns,
+        data,
+        initialState: { pageIndex: 0 },
+      },
+      useSortBy,
+      usePagination,
+    )
 
-  const SearchTab = () => (
+    function filterTable(str) {
+      setInputFilter(str)
+      data.forEach((e, i, a) => {
+        if (!e.strMeal.startsWith(str)) {
+          a[i].visible = false
+        }
+      })
+    }
 
-    <>
-      <Select className="search" options={options} />
+    function clearFilter() {
+      setInputFilter("")
+      data.forEach((e, i, a) => {
+        a[i].visible = true
+      })
+    }
 
-    </>
-  )
-
-
-
-  return (
-    <div className="Table">
-      {()=>call()}
-      {console.log("My props")}
-      {console.log(props)}
-      
-      <Header />
-
+    // Render the UI for your table
+    return (
       <div className="tablePage">
 
-
-        <SearchTab />
-
-
-        <table {...getTableProps()} >
+        <div className="filterMeal">
+          <input name="filter"  >
+          </input>
+          <div className="filterBtn">
+            <button onClick={() => filterTable(document.getElementsByName("filter")[0].value)}>Search</button>
+            <button onClick={() => clearFilter()} >Clear</button>
+          </div>
+        </div>
+        <table {...getTableProps()}>
           <thead>
-            {headerGroups.map((headerGroup, i) => (
-              <tr key={i} {...headerGroup.getHeaderGroupProps()}>
-                {headerGroup.headers.map((column, i) => (
-                  <th key={i}
-                    {...column.getHeaderProps(column.getSortByToggleProps())}
-                    {...column.getHeaderProps()}
-                  >
+            {headerGroups.map(headerGroup => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map(column => (
+                  // Add the sorting props to control sorting. For this example
+                  // we can add them into the header props
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())}>
                     {column.render('Header')}
+                    {/* Add a sort direction indicator */}
                     <span>
                       {column.isSorted
                         ? column.isSortedDesc
@@ -166,27 +168,21 @@ function Table(props) {
               </tr>
             ))}
           </thead>
-
           <tbody {...getTableBodyProps()}>
             {page.map((row, i) => {
               prepareRow(row)
               return (
-                <>
-                  <tr
-                    {...row.getRowProps()}
-
-                  >
-
-                    {console.log(row.cells[0].value)}
+                <tr {...row.getRowProps()}>
+                  {/* {row.cells.map(cell => {
+                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  })} */}
+                  { row.original.visible && <>
                     <td ><img src={`${row.cells[0].value}`} alt="foodImage"></img></td>
                     <td><p>{row.cells[1].value}</p></td>
-
-
-
                     <td><p>{row.cells[2].value}</p></td>
                     <td>
                       <a href={row.cells[3].value}>
-                        <FaYoutube className="youtubeBtn" size={"2rem"} />
+                        <FaYoutube className="youtubeBtn" size={32} />
                       </a>
                     </td>
                     <td>
@@ -200,15 +196,18 @@ function Table(props) {
                         <FaPlusCircle className="plusBtn" />
                       </Link>
                     </td>
+                  </>
+                  }
 
-
-                  </tr>
-
-                </>
+                </tr>
               )
             })}
           </tbody>
-        </table >
+        </table>
+        {/* 
+          Pagination can be built however you'd like. 
+          This is just a very basic UI implementation:
+        */}
         <div className="pagination">
           <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
             {'<<'}
@@ -230,7 +229,15 @@ function Table(props) {
           </span>
         </div>
       </div>
-      < Footer />
+    )
+  }
+
+
+  return (
+    <div className="Table">
+      <Header />
+      <TableS columns={columns} data={data} />
+      <Footer />
     </div>
   )
 }
@@ -238,7 +245,6 @@ function Table(props) {
 const mapStateToProps = ({ meal }) => {
   return {
     meal: meal
-    //       name: user.name
   }
 }
 
@@ -248,5 +254,5 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-// export default Table;
 export default connect(mapStateToProps, mapDispatchToProps)(Table);
+// export default Table;
