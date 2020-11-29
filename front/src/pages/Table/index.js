@@ -27,7 +27,6 @@ function Table(props) {
 
   useEffect(() => {
     getData()
-    console.log("useEfffect")
   }, [])
 
 
@@ -50,7 +49,6 @@ function Table(props) {
 
   }
   const getDataFromAPI = async (l) => {
-    console.log("Get from API")
     try {
       const res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?f=${l}`)
       const res1 = await res.json()
