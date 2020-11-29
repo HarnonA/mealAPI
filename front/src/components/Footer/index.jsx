@@ -12,9 +12,9 @@ function Footer() {
         <p>Phone: +55 11 123456789</p>
       </div>
       <div className="social">
-        <a href="https://www.google.com/maps/@-23.6815302,-46.8761859,10z"><FaMapMarkerAlt size='2rem'/></a>
-        <a href="https://www.facebook.com"><FaFacebook size='2rem'/></a>
-        <a href="https://www.instagram.com"><FaInstagram size='2rem'/></a>
+        <a href="https://www.google.com/maps/@-23.6815302,-46.8761859,10z"><FaMapMarkerAlt size={32} /></a>
+        <a href="https://www.facebook.com"><FaFacebook size={32} /></a>
+        <a href="https://www.instagram.com"><FaInstagram size={32} /></a>
       </div>
 
     </div>
