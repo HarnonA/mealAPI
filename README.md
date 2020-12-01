@@ -1,5 +1,14 @@
 # Meal API
-<h4>Whit this application is possible to sign in, list and look recipes</h4>
+<h4>With this application is possible to sign in, list, search and look recipes instructions, also watch the recipe video on youtube. </h4>
+
+<h3>Requirements</h3>
+<p>Git</p>
+<p>NPM or yarn</p>
+
+<h3>Technologies</h3>
+<p>React</p>
+<p>React Table</p>
+<p>Redux</p>
 
 <h1>Getting started</h1>
 
